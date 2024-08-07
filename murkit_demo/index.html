@@ -21,26 +21,23 @@
 
         #content {
             background-color: #202020;
-            width: 100%;
-            height: 100%;
-            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
             top: 0;
             left: 0;
+            overflow: hidden;
         }
 
-        /* Landscape mode styles */
         .landscape {
             transform: rotate(90deg);
             transform-origin: center center;
             width: 100vh;
-            /* 100% of the viewport height */
             height: 100vw;
-            /* 100% of the viewport width */
-            overflow: hidden;
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(90deg);
+            translate: -50% -50%;
         }
     </style>
 </head>
@@ -82,8 +79,6 @@
 
         // Initial check
         handleOrientationChange();
-
-        // document.addEventListener('click', fullscreen);
     </script>
 </body>
 
