@@ -1,106 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Murkit demo</title>
     <script type="text/javascript" src="dist/main.js"></script>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
             color: #d0d0d0;
             background-color: #202020;
         }
-        #content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         canvas {
             image-rendering: crisp-edges;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        /* Landscape mode styles */
-        @media (orientation: landscape) and (max-height: 500px) {
-            #content {
-                transform: rotate(90deg);
-                transform-origin: center center;
-                width: 100vh;
-                height: 100vw;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin-top: -50vw;
-                margin-left: -50vh;
-            }
         }
     </style>
 </head>
 <body>
-    <div id="content">
-        <!-- Your game canvas will be inserted here -->
+    <div id="content" style="background-color: #202020;">
     </div>
-
-    <script>
+    <script type="text/javascript">
         const content = document.getElementById('content');
-        let isFullscreen = false;
-
-        function enterFullscreen() {
-            if (!document.fullscreenElement && !isFullscreen) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
-                isFullscreen = true;
+        const fullscreen = () => {
+            if (content.requestFullscreen) {
+                content.requestFullscreen();
+            } else if (content.mozRequestFullScreen) { // Firefox
+                content.mozRequestFullScreen();
+            } else if (content.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                content.webkitRequestFullscreen();
+            } else if (content.msRequestFullscreen) { // IE/Edge
+                content.msRequestFullscreen();
             }
         }
-
-        function handleResize() {
-            // Adjust content size and position
-            const isLandscape = window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches;
-            if (isLandscape) {
-                content.style.width = window.innerHeight + 'px';
-                content.style.height = window.innerWidth + 'px';
-                content.style.marginTop = (-window.innerWidth / 2) + 'px';
-                content.style.marginLeft = (-window.innerHeight / 2) + 'px';
+        const handleOrientationChange = () => {
+            if (window.innerHeight < window.innerWidth) {
+                content.classList.add('landscape');
             } else {
-                content.style.width = '100%';
-                content.style.height = '100%';
-                content.style.marginTop = '0';
-                content.style.marginLeft = '0';
+                content.classList.remove('landscape');
             }
-            console.log('Window resized');
         }
 
-        // Enter fullscreen on first tap/click
-        document.addEventListener('click', enterFullscreen, { once: true });
-        document.addEventListener('touchstart', enterFullscreen, { once: true });
+        document.addEventListener('click', fullscreen);
+        document.addEventListener('touchstart', fullscreen);
+        // window.addEventListener('resize', handleOrientationChange);
+        // window.addEventListener('orientationchange', handleOrientationChange);
+        // document.addEventListener('fullscreenchange', handleOrientationChange);
 
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('orientationchange', handleResize);
-
-        // Initial call to set correct size and position
-        handleResize();
-
-        // Lock orientation to landscape on mobile devices (if supported)
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch((error) => {
-                console.log('Unable to lock screen orientation:', error);
-            });
-        }
+        // Initial check
+        handleOrientationChange();
     </script>
 </body>
 </html>
+
