@@ -4,6 +4,7 @@
 <head>
     <title>Murkit demo</title>
     <script type="text/javascript" src="dist/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style type="text/css">
         html,
@@ -13,18 +14,41 @@
             color: #d0d0d0;
             background-color: #202020;
         }
+
         canvas {
             image-rendering: crisp-edges;
+        }
+
+        background-color: #202020;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        }
+
+        /* Landscape mode styles */
+        .landscape {
+            transform: rotate(90deg);
+            transform-origin: center center;
+            width: 100vh;
+            /* 100% of the viewport height */
+            height: 100vw;
+            /* 100% of the viewport width */
+            overflow: hidden;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
         }
     </style>
 </head>
 
 <body>
-    <div id="content" style="background-color: #202020; width: 90%; height: 90%;">
+    <div id="content" style="background-color: #202020;">
     </div>
 
     <script type="text/javascript">
-        const button = document.getElementById('fullscreen-btn');
         const content = document.getElementById('content');
 
         const fullscreen = () => {
@@ -39,7 +63,25 @@
             }
         }
 
+        const handleOrientationChange = () => {
+            if (window.innerHeight < window.innerWidth) {
+                // Landscape mode
+                content.classList.add('landscape');
+            } else {
+                // Portrait mode
+                content.classList.remove('landscape');
+            }
+        }
+
         document.addEventListener('click', fullscreen);
+        window.addEventListener('resize', handleOrientationChange);
+        window.addEventListener('orientationchange', handleOrientationChange);
+        document.addEventListener('fullscreenchange', handleOrientationChange);
+
+        // Initial check
+        handleOrientationChange();
+
+        // document.addEventListener('click', fullscreen);
     </script>
 </body>
 
