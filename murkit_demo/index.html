@@ -1,84 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Murkit demo</title>
     <script type="text/javascript" src="dist/main.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style type="text/css">
+    <style>
         html,
         body {
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             color: #d0d0d0;
             background-color: #202020;
         }
 
+        #content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         canvas {
             image-rendering: crisp-edges;
-        }
-
-        #content {
-            background-color: #202020;
-            width: 100vw;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-        }
-
-        .landscape {
-            transform: rotate(90deg);
-            transform-origin: center center;
-            width: 100vh;
-            height: 100vw;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            translate: -50% -50%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
 
 <body>
-    <div id="content" style="background-color: #202020;">
+    <div id="content">
+        <!-- Your game canvas will be inserted here -->
     </div>
 
-    <script type="text/javascript">
+    <script>
         const content = document.getElementById('content');
 
-        const fullscreen = () => {
-            if (content.requestFullscreen) {
-                content.requestFullscreen();
-            } else if (content.mozRequestFullScreen) { // Firefox
-                content.mozRequestFullScreen();
-            } else if (content.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                content.webkitRequestFullscreen();
-            } else if (content.msRequestFullscreen) { // IE/Edge
-                content.msRequestFullscreen();
-            }
-        }
-
-        const handleOrientationChange = () => {
-            if (window.innerHeight < window.innerWidth) {
-                // Landscape mode
-                content.classList.add('landscape');
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                if (content.requestFullscreen) {
+                    content.requestFullscreen();
+                } else if (content.mozRequestFullScreen) {
+                    content.mozRequestFullScreen();
+                } else if (content.webkitRequestFullscreen) {
+                    content.webkitRequestFullscreen();
+                } else if (content.msRequestFullscreen) {
+                    content.msRequestFullscreen();
+                }
             } else {
-                // Portrait mode
-                content.classList.remove('landscape');
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         }
 
-        document.addEventListener('click', fullscreen);
-        document.addEventListener('touchstart', fullscreen);
-        window.addEventListener('resize', handleOrientationChange);
-        window.addEventListener('orientationchange', handleOrientationChange);
-        document.addEventListener('fullscreenchange', handleOrientationChange);
+        function handleResize() {
+            // You can add specific resize logic here if needed
+            console.log('Window resized');
+        }
 
-        // Initial check
-        handleOrientationChange();
+        document.addEventListener('click', toggleFullscreen);
+        document.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            toggleFullscreen();
+        });
+
+        window.addEventListener('resize', handleResize);
+
+        // Prevent default touch behavior to avoid unwanted scrolling or zooming
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, {passive: false});
+
+        // Lock orientation to landscape on mobile devices (if supported)
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch((error) => {
+                console.log('Unable to lock screen orientation:', error);
+            });
+        }
     </script>
 </body>
 
