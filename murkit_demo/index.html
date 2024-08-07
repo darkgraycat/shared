@@ -13,16 +13,13 @@
             color: #d0d0d0;
             background-color: #202020;
         }
-        #fullscreen-btn {
-            background-color: #202020;
-            color: #ffffff;
+        canvas {
+            image-rendering: crisp-edges;
         }
     </style>
 </head>
 
 <body>
-    <button id="fullscreen-btn">Fullscreen</button>
-
     <div id="content" style="background-color: #202020; width: 90%; height: 90%;">
     </div>
 
@@ -30,7 +27,7 @@
         const button = document.getElementById('fullscreen-btn');
         const content = document.getElementById('content');
 
-        button.addEventListener('click', () => {
+        const fullscreen = () => {
             if (content.requestFullscreen) {
                 content.requestFullscreen();
             } else if (content.mozRequestFullScreen) { // Firefox
@@ -40,11 +37,9 @@
             } else if (content.msRequestFullscreen) { // IE/Edge
                 content.msRequestFullscreen();
             }
-        });
-
-        window.onfocus = () => {
-            window.location.reload()
         }
+
+        document.addEventListener('click', fullscreen);
     </script>
 </body>
 
