@@ -268,9 +268,14 @@
         <char id="36" x="48" y="36" width="6" height="6" page="0" xadvance="5" xoffset="0" yoffset="0"/>
         <!-- $ -->
 
-        <char id="32" x="54" y="36" width="6" height="6" page="0" xadvance="4" xoffset="0" yoffset="0"/>
+        <char id="32" x="72" y="36" width="6" height="6" page="0" xadvance="4" xoffset="0" yoffset="0"/>
         <!--   -->
     
+        <char id="59" x="54" y="36" width="6" height="6" page="0" xadvance="6" xoffset="0" yoffset="0"/>
+        <!-- ; (heart)-->
+
+        <char id="95" x="60" y="36" width="6" height="6" page="0" xadvance="6" xoffset="0" yoffset="0"/>
+        <!-- _ (speed)-->
     </chars>
 </font>
     
